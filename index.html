@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Una Pregunta Especial 💙</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@400;600;700&family=Great+Vibes&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 25%, #ffc1cc 50%, #ffd3e2 75%, #c1dfc4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .letter-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 70px 60px 60px;
+            border-radius: 8px;
+            box-shadow: 
+                0 10px 40px rgba(200, 150, 150, 0.2),
+                0 2px 8px rgba(200, 150, 150, 0.15);
+            animation: wave 8s ease-in-out infinite 2s;
+        }
+
+        @keyframes wave {
+            0%, 100% {
+                border-radius: 8px;
+            }
+            50% {
+                border-radius: 10px 6px 8px 10px;
+            }
+        }
+
+        /* Efecto de sobre con solapa triangular */
+        .letter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 45px;
+            background: linear-gradient(135deg, #FFD6E8 0%, #FFC8DD 50%, #FFB5C5 100%);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .letter-card::after {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-top: 30px solid #FFB5C5;
+            filter: drop-shadow(0 2px 4px rgba(200, 150, 150, 0.2));
+        }
+
+        /* Sello postal mejorado */
+        .stamp {
+            position: absolute;
+            top: 55px;
+            right: 50px;
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 200, 221, 0.3);
+            border: 3px solid #FFB5C5;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            transform: rotate(12deg);
+            box-shadow: 0 2px 8px rgba(200, 150, 150, 0.2);
+            animation: stampPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes stampPulse {
+            0%, 100% {
+                transform: rotate(12deg) scale(1);
+            }
+            50% {
+                transform: rotate(12deg) scale(1.05);
+            }
+        }
+
+        /* Agregada galería de fotos con efecto polaroid */
+        .photo-gallery {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 35px 0;
+            flex-wrap: wrap;
+        }
+
+        .photo-frame {
+            background: white;
+            padding: 12px 12px 45px 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transform: rotate(-2deg);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            animation: photoFloat 4s ease-in-out infinite;
+            width: 250px;
+            height: 320px;
+        }
+
+        .photo-frame:nth-child(2) {
+            transform: rotate(3deg);
+            animation-delay: 0.5s;
+        }
+
+        .photo-frame:hover {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.3);
+            z-index: 10;
+        }
+
+        @keyframes photoFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(-2deg);
+            }
+            50% {
+                transform: translateY(-8px) rotate(-2deg);
+            }
+        }
+
+        .photo-frame:nth-child(2) {
+            animation-name: photoFloat2;
+        }
+
+        @keyframes photoFloat2 {
+            0%, 100% {
+                transform: translateY(0) rotate(3deg);
+            }
+            50% {
+                transform: translateY(-8px) rotate(3deg);
+            }
+        }
+
+        .photo-frame img {
+            width: 226px;
+            height: 226px;
+            display: block;
+            border-radius: 2px;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        /* Corazón flotante con animación */
+        .heart-container {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 80px;
+            filter: drop-shadow(0 4px 12px rgba(255, 105, 180, 0.3));
+            animation: floatHeart 3s ease-in-out infinite;
+        }
+
+        @keyframes floatHeart {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-10px) scale(1.05);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 50%, #F67280 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 35px;
+            font-size: 3em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-family: 'Dancing Script', cursive;
+            animation: slideDown 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Contenido con fuente manuscrita elegante */
+        .letter-content {
+            color: #4a4a4a;
+            line-height: 2.2;
+            font-size: 1.2em;
+            font-weight: 400;
+            margin-bottom: 35px;
+            animation: fadeIn 1.2s ease-out 0.6s both;
+            font-family: 'Dancing Script', cursive;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .letter-content p {
+            margin-bottom: 28px;
+            text-align: left;
+            text-indent: 40px;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 1.3em;
+            text-align: center;
+            text-indent: 0;
+        }
+
+        /* Botón con animaciones suaves y efecto de brillo */
+        .button-container {
+            text-align: center;
+            margin-top: 45px;
+            animation: fadeIn 1.5s ease-out 0.9s both;
+        }
+
+        .btn-answer {
+            background: linear-gradient(135deg, #FFB5C5 0%, #FFC8DD 50%, #FFD6E8 100%);
+            color: #C06C84;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 8px 25px rgba(255, 181, 197, 0.4);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-answer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            transition: left 0.7s;
+        }
+
+        .btn-answer:hover::before {
+            left: 100%;
+        }
+
+        .btn-answer:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 181, 197, 0.6);
+        }
+
+        .btn-answer:active {
+            transform: translateY(-1px);
+        }
+
+        /* Firma con fuente caligráfica elegante */
+        .signature {
+            text-align: right;
+            font-style: normal;
+            background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-top: 40px;
+            font-size: 1.5em;
+            font-weight: 400;
+            font-family: 'Great Vibes', cursive;
+        }
+
+        /* Modal con glassmorphism y animación suave */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 200, 221, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: modalFadeIn 0.4s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 50px;
+            border-radius: 40px;
+            text-align: center;
+            max-width: 500px;
+            margin: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px rgba(255, 182, 193, 0.4);
+            animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h2 {
+            background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .modal-content .celebration {
+            font-size: 90px;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .modal-content p {
+            color: #6a6a6a;
+            font-size: 1.1em;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        /* SVG Shadow mejorado estilo Sonic */
+        .shadow-container {
+            margin: 25px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .shadow-svg {
+            width: 140px;
+            height: 140px;
+            animation: shadowFloat 3s ease-in-out infinite;
+            filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes shadowFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(-3deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(3deg);
+            }
+        }
+
+        .shadow-text {
+            font-size: 1em;
+            color: #888;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        /* Responsive mejorado */
+        @media (max-width: 600px) {
+            .letter-card {
+                padding: 60px 35px 50px;
+            }
+
+            .stamp {
+                width: 55px;
+                height: 55px;
+                font-size: 28px;
+                right: 30px;
+                top: 50px;
+            }
+
+            h1 {
+                font-size: 2.2em;
+            }
+
+            .heart-container {
+                font-size: 60px;
+            }
+
+            .letter-content {
+                font-size: 1.05em;
+                line-height: 2;
+            }
+
+            .btn-answer {
+                padding: 16px 40px;
+                font-size: 1.1em;
+            }
+
+            .modal-content {
+                padding: 40px 30px;
+            }
+
+            .shadow-svg {
+                width: 110px;
+                height: 110px;
+            }
+
+            .shadow-text {
+                font-size: 0.9em;
+            }
+
+            .photo-gallery {
+                gap: 15px;
+            }
+
+            .photo-frame {
+                width: 180px;
+                height: 250px;
+            }
+
+            .photo-frame img {
+                width: 156px;
+                height: 156px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Canvas para partículas flotantes -->
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="container">
+        <div class="letter-card">
+            <div class="stamp">💌</div>
+            
+            <div class="heart-container">💙</div>
+
+            <h1>Para ti, Jedry</h1>
+
+            <!-- Agregada galería de fotos -->
+            <div class="photo-gallery">
+                <div class="photo-frame">
+                    <img src="she2.png" alt="Recuerdo especial">
+                </div>
+                <div class="photo-frame">
+                    <img src="she.png" alt="Momento hermoso">
+                </div>
+            </div>
+
+            <div class="letter-content">
+                <p>
+                    Quería escribirte esto con calma, porque hay cosas que se sienten mejor cuando se dicen sin prisas.
+                    Desde que volvimos a hablar, me siento más acompañado, más tranquilo,
+                    y con ilusión por lo que estamos construyendo, incluso con la distancia de por medio.
+                </p>
+
+                <p>
+                    Me gusta lo que somos, lo que hablamos, lo que compartimos día a día.
+                    Para mí esto no es un juego ni algo pasajero. Es real, es importante,
+                    y quiero que lo sientas así también. 💙
+                </p>
+
+                <p>
+                    Te soy sincero: me gustaría que esto fuera aún más especial en persona,
+                    mirarte a los ojos y decirlo ahí, pero también me cuesta seguir esperando,
+                    porque lo que siento por ti es serio y quiero formalizarlo,
+                    darte la seguridad de que para mí esto vale la pena.
+                </p>
+
+                <p>
+                    Ojalá Dios permita que pronto la distancia no sea un problema,
+                    y que podamos vivir esto como se merece.
+                </p>
+
+                <p class="highlight">
+                    ¿Quieres ser mi novia? 💙
+                </p>
+            </div>
+
+            <div class="button-container">
+                <button class="btn-answer" onclick="showResponse()">
+                    Haz clic aquí ;)
+                </button>
+            </div>
+
+            <div class="signature">
+                Con cariño,<br>
+                Andrés 💙
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="responseModal">
+        <div class="modal-content">
+            <div class="celebration">✨</div>
+            <p>
+                Sea cual sea tu respuesta, lo importante es que nace desde el corazón.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        class Particle {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + 10;
+                this.size = Math.random() * 4 + 2;
+                this.speedY = Math.random() * 1.5 + 0.5;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.opacity = Math.random() * 0.5 + 0.3;
+                this.color = this.getRandomPastelColor();
+                this.life = 0;
+                this.maxLife = Math.random() * 200 + 100;
+            }
+
+            getRandomPastelColor() {
+                const colors = [
+                    'rgba(255, 181, 197, ',
+                    'rgba(255, 200, 221, ',
+                    'rgba(189, 224, 254, ',
+                    'rgba(184, 242, 230, ',
+                    'rgba(255, 214, 232, ',
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                this.life++;
+                
+                if (this.life > this.maxLife) {
+                    this.y = this.canvas.height + 10;
+                    this.x = Math.random() * this.canvas.width;
+                    this.life = 0;
+                }
+            }
+
+            draw(ctx) {
+                const fadeOpacity = this.life < 50 ? this.life / 50 : 
+                                   (this.maxLife - this.life) / 50;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color + (this.opacity * fadeOpacity) + ')';
+                ctx.fill();
+            }
+        }
+
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function initParticles() {
+            particles = [];
+            const particleCount = Math.min(50, Math.floor(canvas.width / 20));
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle(canvas));
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw(ctx);
+            });
+            
+            requestAnimationFrame(animateParticles);
+        }
+
+        // Ensure particles are initialized and animated on load
+        window.addEventListener('load', () => {
+            resizeCanvas();
+            initParticles();
+            animateParticles();
+        });
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initParticles();
+        });
+
+        function showResponse() {
+            const modal = document.getElementById('responseModal');
+            modal.style.display = 'flex';
+            createConfetti();
+        }
+
+        function createConfetti() {
+            const colors = ['#FFB5C5', '#FFC8DD', '#BDE0FE', '#B8F2E6', '#FFD6E8'];
+            const confettiCount = 100;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.width = Math.random() * 15 + 5 + 'px';
+                    confetti.style.height = Math.random() * 15 + 5 + 'px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.opacity = Math.random() * 0.7 + 0.3;
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0%';
+                    confetti.style.zIndex = '9999';
+                    confetti.style.pointerEvents = 'none';
+                    
+                    const rotation = Math.random() * 360;
+                    const xMovement = (Math.random() - 0.5) * 200;
+                    
+                    confetti.animate([
+                        { 
+                            transform: `translateY(0px) translateX(0px) rotate(0deg)`,
+                            opacity: confetti.style.opacity
+                        },
+                        { 
+                            transform: `translateY(${window.innerHeight + 50}px) translateX(${xMovement}px) rotate(${rotation}deg)`,
+                            opacity: 0
+                        }
+                    ], {
+                        duration: Math.random() * 2000 + 2000,
+                        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                    });
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 4000);
+                }, i * 30);
+            }
+        }
+
+        document.getElementById('responseModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
